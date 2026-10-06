@@ -1,0 +1,48 @@
+{
+  "name": "ownit",
+  "version": "1.0.0",
+  "description": "Understand, audit and defend any codebase — yours or AI-written. Works with Claude, GPT, Gemini, Groq, Ollama and any OpenAI-compatible API.",
+  "type": "module",
+  "bin": {
+    "ownit": "bin/ownit.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node bin/ownit.js",
+    "test": "node --test",
+    "prepublishOnly": "node --test"
+  },
+  "keywords": [
+    "ai",
+    "cli",
+    "codebase",
+    "code-review",
+    "documentation",
+    "developer-tools",
+    "vibe-coding",
+    "claude",
+    "openai",
+    "gemini",
+    "groq",
+    "ollama"
+  ],
+  "author": "Reabot6 Ltd",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reabot6/ownit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/reabot6/ownit/issues"
+  },
+  "homepage": "https://github.com/reabot6/ownit#readme"
+}
