@@ -6,7 +6,7 @@ import { skeleton } from "../analyze/facts.js"
 export const meta = {
   name: "stack",
   description: "Document the tech stack and architecture.",
-  usage: "ownit stack [--no-ai] [--model <id>]",
+  usage: "kontx stack [--no-ai] [--model <id>]",
 }
 
 export async function prepare({ project, facts }) {
@@ -21,7 +21,7 @@ export async function prepare({ project, facts }) {
   return {
     title: "Tech Stack",
     subtitle: "Languages, frameworks and architecture documented from the code.",
-    output: ".ownit/STACK.md",
+    output: ".kontx/STACK.md",
     factsMd: depMd + routeMd + treeMd,
     units: [{
       id: "stack",

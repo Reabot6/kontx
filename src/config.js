@@ -4,7 +4,7 @@ import path from "node:path"
 import { PRESETS, PRESET_ORDER, detectPresetFromKey, isLocalUrl } from "./providers/presets.js"
 import { ConfigError, ModelRequiredError, UsageError } from "./errors.js"
 
-export const configDir = () => process.env.OWNIT_CONFIG_DIR || path.join(os.homedir(), ".ownit")
+export const configDir = () => process.env.kontx_CONFIG_DIR || path.join(os.homedir(), ".kontx")
 export const configFile = () => path.join(configDir(), "config.json")
 
 const empty = () => ({ version: 1, default: null, profiles: {} })
@@ -15,7 +15,7 @@ export function loadConfig() {
     raw = JSON.parse(fs.readFileSync(configFile(), "utf8"))
   } catch (err) {
     if (err instanceof SyntaxError) {
-      throw new ConfigError(`Config file is corrupted: ${configFile()}`, { hint: "Delete it and run `ownit config` again." })
+      throw new ConfigError(`Config file is corrupted: ${configFile()}`, { hint: "Delete it and run `kontx config` again." })
     }
     return empty() // missing / unreadable → treat as not configured
   }
@@ -45,8 +45,8 @@ const cleanKey = (k) => String(k).trim().replace(/^["']|["']$/g, "")
 /**
  * Decide which provider/model/key to use. Precedence (highest first):
  *   1. CLI flags  (--provider --key --model --base-url)
- *   2. Environment (OWNIT_PROVIDER, OWNIT_API_KEY, OWNIT_MODEL, OWNIT_BASE_URL, ANTHROPIC_API_KEY, …)
- *   3. ~/.ownit/config.json (default profile)
+ *   2. Environment (kontx_PROVIDER, kontx_API_KEY, kontx_MODEL, kontx_BASE_URL, ANTHROPIC_API_KEY, …)
+ *   3. ~/.kontx/config.json (default profile)
  *   4. Auto-detect from whichever provider API-key env var is set
  */
 export function resolveProvider(opts = {}, { env = process.env, config = loadConfig(), needModel = true } = {}) {
@@ -59,7 +59,7 @@ export function resolveProvider(opts = {}, { env = process.env, config = loadCon
       })
     }
   }
-  if (!name && env.OWNIT_PROVIDER) name = env.OWNIT_PROVIDER
+  if (!name && env.kontx_PROVIDER) name = env.kontx_PROVIDER
   if (!name && config.default && config.profiles[config.default]) name = config.default
   if (!name) {
     for (const id of PRESET_ORDER) {
@@ -71,7 +71,7 @@ export function resolveProvider(opts = {}, { env = process.env, config = loadCon
   }
   if (!name) {
     throw new ConfigError("No AI provider is set up yet.", {
-      hint: "Run `ownit config`, or export a key such as ANTHROPIC_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY or GROQ_API_KEY.",
+      hint: "Run `kontx config`, or export a key such as ANTHROPIC_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY or GROQ_API_KEY.",
     })
   }
 
@@ -80,14 +80,14 @@ export function resolveProvider(opts = {}, { env = process.env, config = loadCon
   const preset = PRESETS[presetId]
   if (!preset) {
     throw new UsageError(`Unknown provider "${name}".`, {
-      hint: `Built in: ${PRESET_ORDER.join(", ")}. Run \`ownit config\` to add your own endpoint.`,
+      hint: `Built in: ${PRESET_ORDER.join(", ")}. Run \`kontx config\` to add your own endpoint.`,
     })
   }
 
   const protocol = profile?.protocol || opts.protocol || preset.protocol
-  const rawBase = opts.baseUrl || env.OWNIT_BASE_URL || profile?.baseUrl || preset.baseUrl
+  const rawBase = opts.baseUrl || env.kontx_BASE_URL || profile?.baseUrl || preset.baseUrl
   if (!rawBase) {
-    throw new UsageError(`"${name}" needs a base URL.`, { hint: "Pass --base-url https://your-host/v1 (or run `ownit config`)." })
+    throw new UsageError(`"${name}" needs a base URL.`, { hint: "Pass --base-url https://your-host/v1 (or run `kontx config`)." })
   }
   const baseUrl = normalizeBase(rawBase)
   let host
@@ -101,8 +101,8 @@ export function resolveProvider(opts = {}, { env = process.env, config = loadCon
   if (/^http:\/\//.test(baseUrl) && !local) warnings.push(`${host} uses plain http:// — your API key will be sent unencrypted.`)
 
   // API key
-  let apiKey = opts.key || env.OWNIT_API_KEY || null
-  let keySource = opts.key ? "--key" : apiKey ? "$OWNIT_API_KEY" : null
+  let apiKey = opts.key || env.kontx_API_KEY || null
+  let keySource = opts.key ? "--key" : apiKey ? "$kontx_API_KEY" : null
   if (!apiKey) {
     for (const k of [...(preset.envVars || []), profile?.apiKeyEnv].filter(Boolean)) {
       if (env[k]) {
@@ -119,11 +119,11 @@ export function resolveProvider(opts = {}, { env = process.env, config = loadCon
   if (apiKey) apiKey = cleanKey(apiKey)
   if (!apiKey && !preset.keyOptional && !local) {
     throw new ConfigError(`No API key found for ${preset.label}.`, {
-      hint: `Run \`ownit config\`${preset.envVars?.[0] ? `, or export ${preset.envVars[0]}` : ""}.`,
+      hint: `Run \`kontx config\`${preset.envVars?.[0] ? `, or export ${preset.envVars[0]}` : ""}.`,
     })
   }
 
-  const model = opts.model || env.OWNIT_MODEL || profile?.model || preset.defaultModel || null
+  const model = opts.model || env.kontx_MODEL || profile?.model || preset.defaultModel || null
   const resolved = {
     id: name,
     preset: presetId,
@@ -143,7 +143,7 @@ export function resolveProvider(opts = {}, { env = process.env, config = loadCon
 
   if (!model && needModel) {
     throw new ModelRequiredError(`No model chosen for ${resolved.label}.`, resolved, {
-      hint: "Pass --model <id>, or run `ownit config` to pick one from the live list.",
+      hint: "Pass --model <id>, or run `kontx config` to pick one from the live list.",
     })
   }
   return resolved

@@ -43,11 +43,11 @@ export function classify(status, message = "") {
 }
 
 const HINTS = {
-  auth: "Check your API key — run `ownit config` to set it again.",
-  model: "Run `ownit models` to list the models your key can use, then pass --model <id>.",
+  auth: "Check your API key — run `kontx config` to set it again.",
+  model: "Run `kontx models` to list the models your key can use, then pass --model <id>.",
   quota: "Your account is out of credits or quota. Check billing with your provider.",
   rate: "You are being rate limited. Wait a minute, or lower --budget to send less per request.",
-  not_found: "The URL looks wrong. Check the provider's base URL (`ownit config`).",
+  not_found: "The URL looks wrong. Check the provider's base URL (`kontx config`).",
   server: "The provider is having problems. Try again in a minute.",
   blocked: "The provider refused this request. Try a different model.",
 }

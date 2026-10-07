@@ -7,7 +7,7 @@
  *   google    → POST {base}/v1beta/models/{model}:generateContent
  *
  * Model IDs go stale fast, so we only ship a default where the ID is a stable alias.
- * Everywhere else the model comes from `ownit config` (which lists the provider's live models)
+ * Everywhere else the model comes from `kontx config` (which lists the provider's live models)
  * or --model.
  */
 export const PRESETS = {

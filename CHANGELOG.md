@@ -4,9 +4,9 @@
 
 ### Added
 - Multi-provider support: Anthropic, OpenAI/OpenAI-compatible, Google Gemini, Groq, OpenRouter, Together, Mistral, DeepSeek, xAI, Fireworks, Cerebras, Ollama, LM Studio, any custom endpoint
-- `ownit config` — interactive provider + model setup (live model listing per provider)
-- `ownit models` — list available models for the current key
-- `ownit cache` — show token savings; `--clear` to wipe
+- `kontx config` — interactive provider + model setup (live model listing per provider)
+- `kontx models` — list available models for the current key
+- `kontx cache` — show token savings; `--clear` to wipe
 - 11 commands: full, risk, readme, qa, bug, env, diff, stack, flow, add, mix
 - Static analysis engine: import graph (JS/TS/Python/Go), symbol extraction, env var scanner, route detection, 15 security/quality signal rules — all computed before any AI call
 - Secret redaction: 12 token patterns, private key blocks, URL credentials, env assignments — redacted before hashing or sending
@@ -19,7 +19,7 @@
 - 41 unit tests, zero dependencies beyond Node.js built-ins
 
 ### Changed
-- Output written to `.ownit/` (auto-gitignored) instead of scattered markdown files in the project root
-- Config stored at `~/.ownit/config.json` (mode 0600) with v0.1 format auto-migrated
+- Output written to `.kontx/` (auto-gitignored) instead of scattered markdown files in the project root
+- Config stored at `~/.kontx/config.json` (mode 0600) with v0.1 format auto-migrated
 - Google provider uses `x-goog-api-key` header (key no longer appears in URLs / logs)
-- `mix` uses `ownit mix a.js b.js` syntax (was `%`-separated)
+- `mix` uses `kontx mix a.js b.js` syntax (was `%`-separated)

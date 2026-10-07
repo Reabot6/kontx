@@ -6,7 +6,7 @@ import { skeleton } from "../analyze/facts.js"
 export const meta = {
   name: "readme",
   description: "Generate or refresh README.md from the actual code.",
-  usage: "ownit readme [--model <id>] [--fresh] [--overwrite]",
+  usage: "kontx readme [--model <id>] [--fresh] [--overwrite]",
 }
 
 export async function prepare({ project, facts, opts }) {
@@ -14,7 +14,7 @@ export async function prepare({ project, facts, opts }) {
   const m = facts.manifests.find((x) => x.type === "npm") || facts.manifests[0]
   const binEntries = Object.entries(m?.bin || {})
   const factsMd = [
-    "<!-- ownit facts (not shown in final README, used by AI) -->",
+    "<!-- kontx facts (not shown in final README, used by AI) -->",
     `- name: ${m?.name || project.name}  version: ${m?.version || "?"}`,
     `- entry: ${facts.entries.map((e) => e.path).join(", ") || "none"}`,
     `- bin: ${binEntries.map(([k, v]) => `${k} → ${v}`).join(", ") || "none"}`,
@@ -63,7 +63,7 @@ ${m?.license ? `${m.license} — confirmed from manifest.` : "Not specified in t
       expect: ["What it does", "Install", "Usage", "Configuration"],
     }],
     finalize: ({ texts, aiOff }) => [{
-      path: opts.overwrite ? "README.md" : ".ownit/README.md",
+      path: opts.overwrite ? "README.md" : ".kontx/README.md",
       content: (aiOff ? "" : texts[0] || "") + (!aiOff && texts[0] ? "" : "\n"),
       backup: opts.overwrite,
     }],

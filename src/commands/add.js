@@ -7,19 +7,19 @@ import path from "node:path"
 export const meta = {
   name: "add",
   description: "Plan how to add a feature to this codebase.",
-  usage: "ownit add '<feature description>' [--model <id>]",
+  usage: "kontx add '<feature description>' [--model <id>]",
 }
 
 export async function prepare({ project, facts, opts, cwd }) {
   const feature = opts.feature || opts._args?.[0]
-  if (!feature?.trim()) throw new UsageError("Describe the feature: ownit add 'add a login endpoint'")
+  if (!feature?.trim()) throw new UsageError("Describe the feature: kontx add 'add a login endpoint'")
   const ctx = projectContext(project, facts)
   const codeFiles = project.files.filter((f) => f.kind === "code" && !facts.testFiles.includes(f.path))
 
   return {
     title: `Feature Plan — ${feature.slice(0, 60)}`,
     subtitle: "Concrete implementation plan grounded in the codebase.",
-    output: ".ownit/ADD.md",
+    output: ".kontx/ADD.md",
     units: [{
       id: "add",
       label: "Feature plan",

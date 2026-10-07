@@ -1,6 +1,31 @@
+# Dependencies
 node_modules/
+
+# Environment
 .env
 .env.*
 !.env.example
-.ownit/
+
+# npm package archives
+*.tgz
+
+# Coverage
+coverage/
+
+# Logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.temp

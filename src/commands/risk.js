@@ -7,7 +7,7 @@ import { skeleton } from "../analyze/facts.js"
 export const meta = {
   name: "risk",
   description: "Security and quality risk audit.",
-  usage: "ownit risk [--model <id>] [--fresh]",
+  usage: "kontx risk [--model <id>] [--fresh]",
 }
 
 export async function prepare({ project, facts, provider }) {
@@ -22,7 +22,7 @@ export async function prepare({ project, facts, provider }) {
   return {
     title: "Security & Risk Audit",
     subtitle: "Potential vulnerabilities and quality risks, grounded in static analysis.",
-    output: ".ownit/RISK.md",
+    output: ".kontx/RISK.md",
     factsMd: sigMd,
     units: [{
       id: "risk",

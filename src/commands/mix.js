@@ -7,12 +7,12 @@ import path from "node:path"
 export const meta = {
   name: "mix",
   description: "Compare or contrast two files.",
-  usage: "ownit mix <file-a> <file-b> [--model <id>]",
+  usage: "kontx mix <file-a> <file-b> [--model <id>]",
 }
 
 export async function prepare({ project, facts, opts }) {
   const [a, b] = (opts._args || []).slice(0, 2)
-  if (!a || !b) throw new UsageError("Specify two files: ownit mix src/a.js src/b.js")
+  if (!a || !b) throw new UsageError("Specify two files: kontx mix src/a.js src/b.js")
   const relA = path.relative(project.root, path.resolve(project.root, a)).split(path.sep).join("/")
   const relB = path.relative(project.root, path.resolve(project.root, b)).split(path.sep).join("/")
   for (const r of [relA, relB]) if (!facts.byPath.has(r)) throw new UsageError(`File not found in scan: ${r}`, { hint: "Paths should be relative to the project root and not ignored." })
@@ -22,7 +22,7 @@ export async function prepare({ project, facts, opts }) {
   return {
     title: `Compare — ${relA} vs ${relB}`,
     subtitle: `Comparison of \`${relA}\` and \`${relB}\`.`,
-    output: ".ownit/MIX.md",
+    output: ".kontx/MIX.md",
     units: [{
       id: "mix",
       label: "Comparison",

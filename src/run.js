@@ -4,11 +4,11 @@ import { scanProject } from "./scan/project.js"
 import { analyzeProject } from "./analyze/facts.js"
 import { resolveProvider } from "./config.js"
 import { createProvider } from "./providers/index.js"
-import { Cache, ensureOwnitDir, readState, writeState } from "./cache.js"
+import { Cache, ensurekontxDir, readState, writeState } from "./cache.js"
 import { gitInfo } from "./git.js"
 import { buildHeader, footer, cleanAi, missingHeadings, estimateTokens as tok, fmt, relTime } from "./render.js"
 import { c, spinner, ok, warn, note, log, confirm, isInteractive } from "./ui.js"
-import { UsageError, OwnitError } from "./errors.js"
+import { UsageError, kontxError } from "./errors.js"
 import { PROMPT_VERSION } from "./prompts.js"
 
 const numberLines = (text) => {
@@ -75,10 +75,10 @@ export function buildPrompt(unit, budget) {
 export function writeOut(root, rel, content, { backupIfExists = false } = {}) {
   const abs = path.resolve(root, rel)
   fs.mkdirSync(path.dirname(abs), { recursive: true })
-  if (path.relative(root, abs).split(path.sep)[0] === ".ownit") ensureOwnitDir(root)
+  if (path.relative(root, abs).split(path.sep)[0] === ".kontx") ensurekontxDir(root)
   if (backupIfExists && fs.existsSync(abs)) {
-    const bak = path.join(root, ".ownit", `${path.basename(rel)}.backup`)
-    ensureOwnitDir(root)
+    const bak = path.join(root, ".kontx", `${path.basename(rel)}.backup`)
+    ensurekontxDir(root)
     fs.copyFileSync(abs, bak)
   }
   fs.writeFileSync(abs, content)
@@ -103,7 +103,7 @@ export async function runReport(cmd, ctx) {
   const skippedN = Object.entries(project.counts).filter(([k]) => ["too-large", "minified", "generated", "data-file", "binary", "secret"].includes(k))
   if (!project.files.length && !cmd.allowEmpty) {
     sp.fail("No source files found")
-    throw new UsageError("There's nothing to analyse in this folder.", { hint: "Run ownit from your project root. Check .gitignore / .ownitignore aren't excluding everything." })
+    throw new UsageError("There's nothing to analyse in this folder.", { hint: "Run kontx from your project root. Check .gitignore / .kontxignore aren't excluding everything." })
   }
   sp.succeed(`Read ${fmt(project.files.length)} files · ${fmt(project.totalLines)} lines` + (skippedN.length ? c.dim(` · skipped ${skippedN.map(([k, n]) => `${n} ${k}`).join(", ")}`) : ""))
   if (project.redactions.length) warn(`Redacted ${project.redactions.length} secret-looking value(s) in ${new Set(project.redactions.map((r) => r.file)).size} file(s) — they are never sent or saved.`)
@@ -124,9 +124,9 @@ export async function runReport(cmd, ctx) {
     if (provider.local || opts.yes || state.consent?.[provider.host]) return
     const files = new Set(prompts.flatMap((p) => p.paths)).size
     const total = prompts.reduce((s, p) => s + p.tokens, 0)
-    if (!isInteractive()) throw new UsageError(`ownit would send code to ${provider.host}, and nobody is here to confirm.`, { hint: "Re-run with --yes to allow it (or use --no-ai / --dry-run)." })
-    log(`\nownit will send ${c.bold(`~${fmt(total)} tokens`)} of this project (${files} files, secrets redacted) to ${c.bold(provider.host)}.`)
-    if (!(await confirm("Continue?", true))) throw new OwnitError("Cancelled — nothing was sent.", { exitCode: 130 })
+    if (!isInteractive()) throw new UsageError(`kontx would send code to ${provider.host}, and nobody is here to confirm.`, { hint: "Re-run with --yes to allow it (or use --no-ai / --dry-run)." })
+    log(`\nkontx will send ${c.bold(`~${fmt(total)} tokens`)} of this project (${files} files, secrets redacted) to ${c.bold(provider.host)}.`)
+    if (!(await confirm("Continue?", true))) throw new kontxError("Cancelled — nothing was sent.", { exitCode: 130 })
     state.consent = { ...state.consent, [provider.host]: new Date().toISOString() }
     writeState(project.root, state)
   }

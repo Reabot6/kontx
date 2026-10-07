@@ -3,7 +3,7 @@ import fs from "node:fs"
 import process from "node:process"
 import { c, log, warn, note, ok, spinner, ask, confirm, isInteractive } from "./ui.js"
 import { VERSION } from "./version.js"
-import { OwnitError, UsageError, ConfigError, ModelRequiredError } from "./errors.js"
+import { kontxError, UsageError, ConfigError, ModelRequiredError } from "./errors.js"
 import { runReport } from "./run.js"
 import { loadConfig, saveConfig, resolveProvider, configDir } from "./config.js"
 import { createProvider } from "./providers/index.js"
@@ -25,10 +25,10 @@ const COMMANDS = {
 }
 
 const HELP = `
-${c.bold("ownit")} v${VERSION} — understand, audit and document any codebase with AI
+${c.bold("kontx")} v${VERSION} — understand, audit and document any codebase with AI
 
 ${c.bold("USAGE")}
-  ownit <command> [options]
+  kontx <command> [options]
 
 ${c.bold("COMMANDS")}
   full        Full codebase audit (architecture, deps, env, tests, risk)
@@ -55,7 +55,7 @@ ${c.bold("GLOBAL OPTIONS")}
   --max-output <n>    Max output tokens per request (default: 8000)
   --timeout <secs>    Request timeout (default: 300)
   --exclude <glob>    Extra ignore pattern (repeatable)
-  --output <file>     Write output to this path instead of .ownit/
+  --output <file>     Write output to this path instead of .kontx/
   --fresh             Ignore cache and make a new request
   --no-ai             Only compute static facts, skip AI
   --dry-run           Show what would be sent without sending
@@ -63,14 +63,14 @@ ${c.bold("GLOBAL OPTIONS")}
   --no-color          Disable colour output
 
 ${c.bold("EXAMPLES")}
-  ownit config
-  ownit full
-  ownit risk --model gemini-2.5-pro
-  ownit diff --base main
-  ownit flow src/index.js
-  ownit add 'add rate limiting to all routes'
-  ownit mix src/auth.js src/middleware.js
-  ANTHROPIC_API_KEY=sk-ant-... ownit full --dry-run
+  kontx config
+  kontx full
+  kontx risk --model gemini-2.5-pro
+  kontx diff --base main
+  kontx flow src/index.js
+  kontx add 'add rate limiting to all routes'
+  kontx mix src/auth.js src/middleware.js
+  ANTHROPIC_API_KEY=sk-ant-... kontx full --dry-run
 `.trim()
 
 function parseArgs(argv) {
@@ -110,7 +110,7 @@ function parseArgs(argv) {
 
 async function runConfig(opts) {
   const cfg = loadConfig()
-  log(`\n${c.bold("ownit config")} — AI provider setup\n`)
+  log(`\n${c.bold("kontx config")} — AI provider setup\n`)
   log("Providers:")
   PRESET_ORDER.forEach((id, i) => {
     const p = PRESETS[id]
@@ -189,7 +189,7 @@ async function runCache(opts) {
   }
   const s = cache.stats()
   const entries = cache.entries()
-  log(`\n${c.bold("ownit cache")} — ${cwd}\n`)
+  log(`\n${c.bold("kontx cache")} — ${cwd}\n`)
   log(`  Entries: ${entries.length}`)
   log(`  Cache hits: ${s.hits}`)
   log(`  API calls: ${s.calls}`)
@@ -203,7 +203,7 @@ async function runCache(opts) {
 export async function main(argv) {
   const [cmd, ...rest] = argv
   if (!cmd || cmd === "--help" || cmd === "-h" || cmd === "help") { log(HELP); return }
-  if (cmd === "--version" || cmd === "-v") { log(`ownit v${VERSION}`); return }
+  if (cmd === "--version" || cmd === "-v") { log(`kontx v${VERSION}`); return }
   const opts = parseArgs(rest)
 
   const ctrl = new AbortController()
@@ -218,7 +218,7 @@ export async function main(argv) {
 
     const loader = COMMANDS[cmd]
     if (!loader) {
-      // did user type a file path as the command? (ownit src/index.js)
+      // did user type a file path as the command? (kontx src/index.js)
       if (fs.existsSync(path.resolve(process.cwd(), cmd))) {
         opts._args.unshift(cmd)
         const { prepare, meta } = await COMMANDS.flow()
@@ -249,11 +249,11 @@ export async function main(argv) {
       } catch {
         note("(Could not fetch — check your API key)")
       }
-      note(`\nRe-run with: --model <id>   or run: ownit config`)
+      note(`\nRe-run with: --model <id>   or run: kontx config`)
       process.exitCode = 1
       return
     }
-    if (err instanceof OwnitError) {
+    if (err instanceof kontxError) {
       log(c.red(`\n✖ ${err.message}`))
       if (err.hint) note(err.hint)
       if (opts.verbose && err.cause) note(String(err.cause))

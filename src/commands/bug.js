@@ -7,7 +7,7 @@ import { skeleton } from "../analyze/facts.js"
 export const meta = {
   name: "bug",
   description: "Find likely bugs and logic errors.",
-  usage: "ownit bug [--model <id>] [--fresh]",
+  usage: "kontx bug [--model <id>] [--fresh]",
 }
 
 export async function prepare({ project, facts }) {
@@ -20,7 +20,7 @@ export async function prepare({ project, facts }) {
   return {
     title: "Bug Hunt",
     subtitle: "Likely bugs and logic errors, grounded in static analysis.",
-    output: ".ownit/BUGS.md",
+    output: ".kontx/BUGS.md",
     factsMd: sigMd,
     units: [{
       id: "bug",

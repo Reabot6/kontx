@@ -7,12 +7,12 @@ import path from "node:path"
 export const meta = {
   name: "flow",
   description: "Trace the execution flow from an entry point.",
-  usage: "ownit flow <file> [--model <id>]",
+  usage: "kontx flow <file> [--model <id>]",
 }
 
 export async function prepare({ project, facts, opts }) {
   const target = opts.target || opts._args?.[0]
-  if (!target) throw new UsageError("Specify a file: ownit flow src/index.js")
+  if (!target) throw new UsageError("Specify a file: kontx flow src/index.js")
   const rel = path.relative(project.root, path.resolve(project.root, target)).split(path.sep).join("/")
   if (!facts.byPath.has(rel)) throw new UsageError(`File not found in scan: ${rel}`, { hint: "Make sure the path is relative to the project root, and the file is not ignored." })
   const ctx = projectContext(project, facts)
@@ -22,7 +22,7 @@ export async function prepare({ project, facts, opts }) {
   return {
     title: `Flow — ${rel}`,
     subtitle: `Execution flow from \`${rel}\`.`,
-    output: ".ownit/FLOW.md",
+    output: ".kontx/FLOW.md",
     units: [{
       id: "flow",
       label: "Flow trace",

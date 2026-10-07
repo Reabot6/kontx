@@ -1,7 +1,7 @@
 /**
  * Minimal, spec-faithful .gitignore engine (last matching rule wins, `!` negation,
  * dir-only `/`, anchoring, `*`, `**`, `?`, `[...]`). Three priority tiers:
- *   0 built-in defaults  <  1 .gitignore files  <  2 .ownitignore / --exclude
+ *   0 built-in defaults  <  1 .gitignore files  <  2 .kontxignore / --exclude
  */
 
 export const DEFAULT_IGNORES = `
@@ -50,8 +50,8 @@ temp/
 *.min.css
 *.map
 *.log
-.ownit/
-OWNIT*.md
+.kontx/
+kontx*.md
 `
 
 function globToRegexSource(glob) {

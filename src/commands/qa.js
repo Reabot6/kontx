@@ -5,7 +5,7 @@ import { skeleton } from "../analyze/facts.js"
 export const meta = {
   name: "qa",
   description: "QA checklist — test coverage, edge cases, and missing assertions.",
-  usage: "ownit qa [--model <id>] [--fresh]",
+  usage: "kontx qa [--model <id>] [--fresh]",
 }
 
 export async function prepare({ project, facts }) {
@@ -18,7 +18,7 @@ export async function prepare({ project, facts }) {
   return {
     title: "QA Checklist",
     subtitle: "Test coverage gaps, edge cases and missing assertions — grounded in the import graph.",
-    output: ".ownit/QA.md",
+    output: ".kontx/QA.md",
     factsMd: untestedMd,
     units: [{
       id: "qa",

@@ -131,7 +131,7 @@ const NOTABLE = new Set(["too-large", "minified", "generated", "data-file", "bin
 
 /**
  * Walk the project and read every source file worth analysing.
- * Deterministic (sorted), respects .gitignore + .ownitignore + --exclude, never follows symlinks.
+ * Deterministic (sorted), respects .gitignore + .kontxignore + --exclude, never follows symlinks.
  */
 export function scanProject({ cwd = process.cwd(), exclude = [], maxFileKb = 256, maxFiles = 4000 } = {}) {
   const root = path.resolve(cwd)
@@ -150,8 +150,8 @@ export function scanProject({ cwd = process.cwd(), exclude = [], maxFileKb = 256
   }
   const rootGitignore = readIf(path.join(root, ".gitignore"))
   if (rootGitignore) matcher.add(rootGitignore, "", 1)
-  const ownitIgnore = readIf(path.join(root, ".ownitignore"))
-  if (ownitIgnore) matcher.add(ownitIgnore, "", 2)
+  const kontxIgnore = readIf(path.join(root, ".kontxignore"))
+  if (kontxIgnore) matcher.add(kontxIgnore, "", 2)
   if (exclude.length) matcher.add(exclude.join("\n"), "", 2)
 
   const counts = {}
@@ -179,7 +179,7 @@ export function scanProject({ cwd = process.cwd(), exclude = [], maxFileKb = 256
     }
     for (const e of entries) {
       if (++visited > MAX_VISITED) {
-        throw new ScanError("This folder has too many files to scan.", { hint: "Run ownit from your project root, or add folders to .ownitignore / --exclude." })
+        throw new ScanError("This folder has too many files to scan.", { hint: "Run kontx from your project root, or add folders to .kontxignore / --exclude." })
       }
       const childRel = rel ? `${rel}/${e.name}` : e.name
       if (e.isSymbolicLink()) {
@@ -211,7 +211,7 @@ export function scanProject({ cwd = process.cwd(), exclude = [], maxFileKb = 256
     files.push(r.file)
     for (const h of r.file.redactions) redactions.push({ file: rel, ...h })
     if (files.length > maxFiles) {
-      throw new ScanError(`More than ${maxFiles} source files found.`, { hint: "Scope it down: add folders to .ownitignore or use --exclude 'pattern'." })
+      throw new ScanError(`More than ${maxFiles} source files found.`, { hint: "Scope it down: add folders to .kontxignore or use --exclude 'pattern'." })
     }
   }
 

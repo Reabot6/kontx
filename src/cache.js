@@ -6,8 +6,8 @@ const CACHE_VERSION = 1
 const MAX_ENTRIES = 100
 const MAX_AGE_MS = 60 * 86_400_000
 
-export function ensureOwnitDir(root) {
-  const dir = path.join(root, ".ownit")
+export function ensurekontxDir(root) {
+  const dir = path.join(root, ".kontx")
   fs.mkdirSync(dir, { recursive: true })
   const gi = path.join(dir, ".gitignore")
   if (!fs.existsSync(gi)) fs.writeFileSync(gi, "*\n") // the folder ignores itself — nothing here is ever committed by accident
@@ -16,13 +16,13 @@ export function ensureOwnitDir(root) {
 
 export function readState(root) {
   try {
-    return JSON.parse(fs.readFileSync(path.join(root, ".ownit", "state.json"), "utf8"))
+    return JSON.parse(fs.readFileSync(path.join(root, ".kontx", "state.json"), "utf8"))
   } catch {
     return { consent: {} }
   }
 }
 export function writeState(root, state) {
-  fs.writeFileSync(path.join(ensureOwnitDir(root), "state.json"), JSON.stringify(state, null, 2))
+  fs.writeFileSync(path.join(ensurekontxDir(root), "state.json"), JSON.stringify(state, null, 2))
 }
 
 /**
@@ -33,7 +33,7 @@ export function writeState(root, state) {
 export class Cache {
   constructor(root) {
     this.root = root
-    this.dir = path.join(root, ".ownit", "cache")
+    this.dir = path.join(root, ".kontx", "cache")
   }
   key(parts) {
     return crypto.createHash("sha256").update(JSON.stringify([CACHE_VERSION, ...parts])).digest("hex").slice(0, 32)
@@ -52,7 +52,7 @@ export class Cache {
     return null
   }
   set(key, entry) {
-    ensureOwnitDir(this.root)
+    ensurekontxDir(this.root)
     fs.mkdirSync(this.dir, { recursive: true })
     const f = this.file(key)
     const tmp = `${f}.${process.pid}.tmp`

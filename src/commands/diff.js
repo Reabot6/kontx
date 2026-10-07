@@ -8,7 +8,7 @@ import { UsageError, GitError } from "../errors.js"
 export const meta = {
   name: "diff",
   description: "Review staged changes or a branch diff.",
-  usage: "ownit diff [--staged] [--base <branch>] [--model <id>]",
+  usage: "kontx diff [--staged] [--base <branch>] [--model <id>]",
 }
 
 function getDiff(cwd, opts) {
@@ -45,7 +45,7 @@ export async function prepare({ project, facts, opts }) {
   return {
     title: `Code Review — ${label}`,
     subtitle: `AI review of ${label}.`,
-    output: ".ownit/DIFF.md",
+    output: ".kontx/DIFF.md",
     factsMd: diffMd,
     units: [{
       id: "diff",

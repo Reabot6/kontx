@@ -18,4 +18,4 @@ jobs:
       - run: node --version
       - run: node --test
       - name: smoke test
-        run: node bin/ownit.js --version
+        run: node bin/kontx.js --version

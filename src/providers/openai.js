@@ -16,7 +16,7 @@ export function openaiAdapter(cfg) {
   const headers = {
     "content-type": "application/json",
     ...(cfg.apiKey ? { authorization: `Bearer ${cfg.apiKey}` } : {}),
-    ...(/openrouter\.ai/.test(base) ? { "x-title": "ownit", "http-referer": "https://github.com/reabot6/ownit" } : {}),
+    ...(/openrouter\.ai/.test(base) ? { "x-title": "kontx", "http-referer": "https://github.com/reabot6/kontx" } : {}),
   }
 
   return {

@@ -7,7 +7,7 @@ import { skeleton } from "../analyze/facts.js"
 export const meta = {
   name: "full",
   description: "Full codebase audit: architecture, dependencies, env, tests, risks — one report.",
-  usage: "ownit full [--model <id>] [--fresh] [--no-ai] [--dry-run]",
+  usage: "kontx full [--model <id>] [--fresh] [--no-ai] [--dry-run]",
 }
 
 export async function prepare({ project, facts, git, provider, opts }) {
@@ -39,7 +39,7 @@ export async function prepare({ project, facts, git, provider, opts }) {
   return {
     title: "Full Audit",
     subtitle: "Architecture, dependencies, environment, test coverage and risk — grounded in static analysis.",
-    output: ".ownit/FULL.md",
+    output: ".kontx/FULL.md",
     factsMd,
     units: [
       {

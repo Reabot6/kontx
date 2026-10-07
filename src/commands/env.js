@@ -5,7 +5,7 @@ import { mdTable } from "../render.js"
 export const meta = {
   name: "env",
   description: "Audit environment variables — which are used, required, and undocumented.",
-  usage: "ownit env [--no-ai] [--model <id>]",
+  usage: "kontx env [--no-ai] [--model <id>]",
 }
 
 export async function prepare({ project, facts }) {
@@ -23,7 +23,7 @@ export async function prepare({ project, facts }) {
   return {
     title: "Environment Variables",
     subtitle: "All env vars found in the code, with required/optional status and usage locations.",
-    output: ".ownit/ENV.md",
+    output: ".kontx/ENV.md",
     factsMd,
     units: [{
       id: "env",

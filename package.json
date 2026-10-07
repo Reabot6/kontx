@@ -1,10 +1,10 @@
 {
-  "name": "ownit",
+  "name": "@reabot6/kontx",
   "version": "1.0.0",
   "description": "Understand, audit and defend any codebase — yours or AI-written. Works with Claude, GPT, Gemini, Groq, Ollama and any OpenAI-compatible API.",
   "type": "module",
   "bin": {
-    "ownit": "bin/ownit.js"
+    "kontx": "./bin/kontx.js"
   },
   "files": [
     "bin",
@@ -17,7 +17,7 @@
     "node": ">=20"
   },
   "scripts": {
-    "start": "node bin/ownit.js",
+    "start": "node bin/kontx.js",
     "test": "node --test",
     "prepublishOnly": "node --test"
   },
@@ -25,8 +25,12 @@
     "ai",
     "cli",
     "codebase",
+    "code-audit",
     "code-review",
+    "static-analysis",
+    "security",
     "documentation",
+    "readme-generator",
     "developer-tools",
     "vibe-coding",
     "claude",
@@ -35,14 +39,14 @@
     "groq",
     "ollama"
   ],
-  "author": "Reabot6 Ltd",
+  "author": "Reabot6",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reabot6/ownit.git"
+    "url": "git+https://github.com/reabot6/kontx.git"
   },
   "bugs": {
-    "url": "https://github.com/reabot6/ownit/issues"
+    "url": "https://github.com/reabot6/kontx/issues"
   },
-  "homepage": "https://github.com/reabot6/ownit#readme"
+  "homepage": "https://github.com/reabot6/kontx#readme"
 }
